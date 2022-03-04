@@ -1,0 +1,43 @@
+from collections import defaultdict
+g=defaultdict(list)
+n,m=map(int,input().split())
+s=0
+A=[]
+for i in range(m):
+    a,b=map(int,input().split())
+    s=max(a,s)
+    A.append(a)
+    g[a].append(b)
+A=set(A)
+A=list(A)
+A.sort(reverse=True)
+for k in g:
+    g[k]=sorted(g[k],reverse=True)
+st=[s]
+v=[0]*(n+1)
+res=[]
+while(len(st)>0):
+    curr=st[-1]
+    if(len(g[curr])>0 and g.get(curr)!=None):
+        if(v[g[curr][0]]==0):
+            st.append(g[curr][0])
+        g[curr].pop(0)
+       
+    else:
+        if(v[st[-1]]==0):
+            v[st[-1]]=1
+            res.append(st.pop())
+            
+        else:
+            st.pop()
+    if(len(st)==0):
+        for k in A:
+            if(v[k]==0):
+                st.append(k)
+                break
+if(len(res)<n):
+    for i in range(1,n+1):
+        if(v[i]==0):
+            res.append(i)
+
+print(*res[::-1])
